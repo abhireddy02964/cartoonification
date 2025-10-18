@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartoonify Image</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f5f5f5;
+            padding: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        .upload-container {
+            margin: 30px 0;
+        }
+        input[type=file] {
+            padding: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        img {
+            margin-top: 20px;
+            max-width: 90%;
+            border: 5px solid #ccc;
+            border-radius: 10px;
+        }
+        .options {
+            margin-top: 20px;
+        }
+        .options a {
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #2196F3;
+            color: white;
+            margin: 5px;
+            border-radius: 5px;
+        }
+        .options a:hover {
+            background-color: #0b7dda;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cartoonify Your Image</h1>
+
+    <div class="upload-container">
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/*" required>
+            <br>
+            <button type="submit">Cartoonify!</button>
+        </form>
+    </div>
+
+    {% if uploaded_image %}
+    <div class="output-container">
+        <img src="{{ uploaded_image }}" alt="Cartoon Image">
+        <div class="options">
+            <a href="{{ uploaded_image }}" download>Download</a>
+            <a href="{{ url_for('index') }}">Re-upload</a>
+        </div>
+    </div>
+    {% endif %}
+
+</body>
+</html>
