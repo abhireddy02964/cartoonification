@@ -13,7 +13,7 @@
       --primary: #4CAF50;
       --primary-hover: #45a049;
       --accent: #2b2b2b;
-      --accent-hover: #2b2b2b;
+      --accent-hover: #1a1a1a;
     }
 
     body {
@@ -42,19 +42,51 @@
       margin: 0;
     }
 
-    .toggle-mode {
-      background-color: white;
-      color: var(--accent);
-      border: none;
-      padding: 8px 16px;
-      border-radius: 20px;
+    /* Toggle Switch */
+    .switch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       cursor: pointer;
-      font-size: 14px;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: relative;
+      width: 45px;
+      height: 22px;
+      background-color: #ccc;
+      border-radius: 34px;
       transition: background-color 0.3s;
     }
 
-    .toggle-mode:hover {
-      background-color: #e0e0e0;
+    .slider::before {
+      content: "";
+      position: absolute;
+      height: 18px;
+      width: 18px;
+      left: 2px;
+      top: 2px;
+      background-color: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(23px);
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      color: white;
+      user-select: none;
     }
 
     .hero {
@@ -168,13 +200,11 @@
     }
 
     footer {
-    position:relative;
-    top:150px;
       text-align: center;
       padding: 30px 20px;
       background-color: var(--accent);
       color: white;
-      margin-top:50px;
+      margin-top: 50px;
     }
 
     @media (max-width: 600px) {
@@ -188,96 +218,77 @@
       }
     }
 
-/* guide / instruction style section  */
+    /* Info Section */
+    .info-section {
+      padding: 60px 20px;
+      text-align: center;
+      background-color: #ffffff;
+      transition: background 0.3s, color 0.3s;
+    }
 
-    .guide-section {
-  padding: 60px 20px;
-  background-color: #ffffff;
-  text-align: center;
-  transition: background 0.3s, color 0.3s;
-}
+    body.dark-mode .info-section {
+      background-color: #2a2a2a;
+      color: var(--text-dark);
+    }
 
-body.dark-mode .guide-section {
-  background-color: #2a2a2a;
-  color: var(--text-dark);
-}
+    .info-section h2 {
+      font-size: 2.2em;
+      margin-bottom: 30px;
+    }
 
-.guide-section h2 {
-  font-size: 2.2em;
-  margin-bottom: 10px;
-}
+    .info-box-container {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      flex-wrap: wrap;
+      gap: 25px;
+    }
 
-.guide-section p {
-  font-size: 1.1em;
-  margin-bottom: 40px;
-}
+    .info-box {
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      padding: 25px;
+      width: 280px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s, background 0.3s;
+    }
 
-.guide-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
-  flex-wrap: wrap;
-}
+    body.dark-mode .info-box {
+      background-color: #3a3a3a;
+    }
 
-.image-box {
-  text-align: center;
-  transition: transform 0.3s;
+    .info-box:hover {
+      transform: scale(1.05);
+      background-color: #eafaea;
+    }
 
-}
+    .info-box h3 {
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
 
-.image-box img {
-  width: 300px;
-  height: 300px;
-  object-fit: fill;
-  border-radius: 10px;
-  border: 4px solid #ccc;
-  transition: transform 0.3s;
-}
-
-.image-box img:hover {
-  transform: scale(1.05);
-}
-
-.image-box p {
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-.arrow-box span {
-  font-size: 3em;
-  animation: bounceArrow 1s infinite;
-}
-
-@keyframes bounceArrow {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(10px); }
-}
-
-@media (max-width: 768px) {
-  .guide-container {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .arrow-box span {
-    transform: rotate(90deg);
-  }
-}
+    .info-box p {
+      font-size: 1em;
+      line-height: 1.5em;
+    }
 
   </style>
 </head>
 <body>
 
-    <!-- nav bar -->
+  <!-- nav bar -->
   <nav>
     <h2>Cartoonify</h2>
-    <button class="toggle-mode" onclick="toggleDarkMode()">Toggle Mode</button>
+    <label class="switch">
+      <input type="checkbox" id="modeToggle" onchange="toggleDarkMode()" />
+      <span class="slider"></span>
+      <span class="toggle-label" id="toggleLabel">Dark Mode: OFF</span>
+    </label>
   </nav>
 
   <div class="hero">
     <h1>Cartoonify Your Image</h1>
-<!--  upload container  -->
+    <!-- upload container -->
     <div class="upload-container">
       <form method="POST" enctype="multipart/form-data" onsubmit="showLoader()">
         <input type="file" name="image" accept="image/*" required />
@@ -286,34 +297,26 @@ body.dark-mode .guide-section {
       </form>
       <div class="loader" id="loader"></div>
     </div>
-
-
- <!-- Guide Section -->
-
-
-<section class="guide-section">
-  <h2>How It Works</h2>
-  <p>Upload your photo and let our cartoonifier do the magic! Here's a quick preview:</p>
-
-  <div class="guide-container">
-  <div class="image-box">
-    <img src="https://tse2.mm.bing.net/th/id/OIP.H1taj_xxInraNxkba00FXgHaMA?cb=12&w=735&h=1191&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Original Image" />
-    <p>Original</p>
   </div>
 
-  <div class="arrow-box">
-    <span>&rarr;</span>
-  </div>
-
-  <div class="image-box">
-    <img src="https://png.pngtree.com/png-vector/20231221/ourmid/pngtree-cartoon-cute-lion-head-clipart-design-png-image_11373514.png" alt="Cartoonified Image" />
-    <p>Cartoonified</p>
-  </div>
-</div>
-
-</section>
-
-  </div>
+  <!-- Info Section -->
+  <section class="info-section">
+    <h2>What Makes Us Special</h2>
+    <div class="info-box-container">
+      <div class="info-box">
+        <h3>About Our Project</h3>
+        <p>Cartoonify transforms your photos into artistic cartoon versions using python flask. Our goal is to make creativity effortless and fun!</p>
+      </div>
+      <div class="info-box">
+        <h3>Security</h3>
+        <p>Your uploaded images are processed safely and securely. We never store your files permanently — your privacy is our top priority.</p>
+      </div>
+      <div class="info-box">
+        <h3>Instant Image Generation</h3>
+        <p>Experience lightning-fast image cartoonification in seconds. Upload, click, and get your unique cartoon masterpiece instantly.</p>
+      </div>
+    </div>
+  </section>
 
   {% if uploaded_image %}
   <div class="popup" id="popup"> Cartoonification Complete!</div>
@@ -331,16 +334,28 @@ body.dark-mode .guide-section {
   </footer>
 
   <script>
-    // Persist theme
     const body = document.body;
-    const currentTheme = localStorage.getItem("theme");
-    if (currentTheme === "dark") {
+    const toggle = document.getElementById("modeToggle");
+    const label = document.getElementById("toggleLabel");
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
       body.classList.add("dark-mode");
+      toggle.checked = true;
+      label.textContent = "Dark Mode: ON";
     }
 
     function toggleDarkMode() {
-      body.classList.toggle("dark-mode");
-      localStorage.setItem("theme", body.classList.contains("dark-mode") ? "dark" : "light");
+      if (toggle.checked) {
+        body.classList.add("dark-mode");
+        label.textContent = "Dark Mode: ON";
+        localStorage.setItem("theme", "dark");
+      } else {
+        body.classList.remove("dark-mode");
+        label.textContent = "Dark Mode: OFF";
+        localStorage.setItem("theme", "light");
+      }
     }
 
     function showLoader() {
@@ -348,18 +363,16 @@ body.dark-mode .guide-section {
     }
 
     // Show popup if image is rendered
-  
-  window.onload = function () {
-    const imageRendered = {{ 'true' if uploaded_image else 'false' }};
-    if (imageRendered) {
-      const popup = document.getElementById("popup");
-      popup.style.display = "block";
-      setTimeout(() => {
-        popup.style.display = "none";
-      }, 3000);
-    }
-  };
-
+    window.onload = function () {
+      const imageRendered = {{ 'true' if uploaded_image else 'false' }};
+      if (imageRendered) {
+        const popup = document.getElementById("popup");
+        popup.style.display = "block";
+        setTimeout(() => {
+          popup.style.display = "none";
+        }, 3000);
+      }
+    };
   </script>
 </body>
 </html>
